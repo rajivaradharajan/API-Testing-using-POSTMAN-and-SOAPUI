@@ -1,0 +1,294 @@
+{
+	"info": {
+		"_postman_id": "21a9b53c-0d5f-4a8b-a204-8acdf17bc585",
+		"name": "CRUD Employee for valid Data",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Verify employee creation with valid data",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "1675c2b0-f8bf-4e15-8c8e-b7b9d3d00729",
+						"exec": [
+							"// Status check\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"// Verify employee name\r",
+							"pm.test(\"Verify employee name\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.data.name).to.eql(pm.variables.get(\"emp_Name\")); \r",
+							"    pm.environment.set(\"emp_Id\", jsonData.data.id);\r",
+							"});\r",
+							"\r",
+							"// Verify employee salary\r",
+							"pm.test(\"Verify employee salary\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.data.salary).to.eql(pm.variables.get(\"emp_Salary\"));\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"{{emp_Name}}\",\r\n    \"salary\": \"{{emp_Salary}}\",\r\n    \"age\": \"{{emp_Age}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/create",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"create"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Verify Created employee",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "9ad51e42-3a5b-4329-b6d6-da2933fac8c2",
+						"exec": [
+							"// Response Check\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"// Verify employee name\r",
+							"pm.test(\"Verify employee name\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.data.employee_name).to.eql(pm.variables.get(\"emp_Name\"));\r",
+							"});\r",
+							"\r",
+							"// Verify employee Salary\r",
+							"pm.test(\"Verify employee salary\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.data.employee_salary).to.eql(pm.variables.get(\"emp_Salary\"));\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/employee/{{emp_Id}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"employee",
+						"{{emp_Id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Verify employee update",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "b12aa124-cf4e-4449-8dea-2814a00546e1",
+						"exec": [
+							"\r",
+							"// Reponse Check\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"// Verify employee's updated salary\r",
+							"pm.test(\"Verify employee's updated salary\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.data.employee_name).to.eql(pm.variables.get(\"emp_Name\"));\r",
+							"    pm.expect(jsonData.data.employee_salary).to.eql(pm.variables.get(\"UpdatedSalary\"));\r",
+							"});\r",
+							"\r",
+							"// Verify employee's updated age\r",
+							"pm.test(\"Verify employee's updated age\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.data.employee_age).to.eql(pm.variables.get(\"UpdatedAge\"));\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"{{emp_Name}}\",\r\n    \"salary\": \"{{UpdatedSalary}}\",\r\n    \"age\": \"{{UpdatedAge}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/update/{{emp_Id}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"update",
+						"{{emp_Id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Verify employee's updated salary and age",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "55a0f72e-a922-4d8e-940c-eaf04c0f5bcb",
+						"exec": [
+							"// Response Check\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"// Verify employee name\r",
+							"pm.test(\"Verify employee name\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.data.employee_name).to.eql(pm.variables.get(\"emp_Name\"));\r",
+							"});\r",
+							"\r",
+							"// Verify employee Salary and age\r",
+							"pm.test(\"Verify employee salary\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.data.employee_salary).to.eql(pm.variables.get(\"UpdatedSalary\"));\r",
+							"    pm.expect(jsonData.data.employee_age).to.eql(pm.variables.get(\"UpdatedAge\"));\r",
+							"\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/employee/{{emp_Id}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"employee",
+						"{{emp_Id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Verify employee deletion",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "c1f6f044-4807-4f5e-89ae-26792772750d",
+						"exec": [
+							"\r",
+							"// Response code check\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"// Verify deleted status and message \r",
+							"pm.test(\"Verify deleted status and message\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.status).to.eql(\"success\");\r",
+							"    pm.expect(jsonData.message).to.eql(\"successfully! deleted Records\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/delete/{{emp_Id}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"delete",
+						"{{emp_Id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Verify employee after delete",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "97fc11ae-5831-45ad-bd45-7e264cee6214",
+						"exec": [
+							"// Response Check\r",
+							"pm.test(\"Status code is 401\", function () {\r",
+							"    pm.response.to.have.status(401);\r",
+							"});\r",
+							"\r",
+							"// Verify employee status and data after delete\r",
+							"pm.test(\"Verify employee status and data after delete\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.status).to.eql(\"failed\");\r",
+							"    pm.expect(jsonData.data).to.eql(\"Record does not found.\");\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/employee/{{emp_Id}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"employee",
+						"{{emp_Id}}"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}

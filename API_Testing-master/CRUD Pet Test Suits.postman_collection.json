@@ -1,0 +1,648 @@
+{
+	"info": {
+		"_postman_id": "a2d8c972-a9d5-4aa6-8baa-a4e14eb559c9",
+		"name": "CRUD Pet Test Suits",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Add a new pet to the store",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "46bb7b6f-2c6c-4404-b243-467ac84f1850",
+						"exec": [
+							"// Status code check\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"// Verify pet name\r",
+							"pm.test(\"Verify pet name\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.name).to.eql((pm.variables.get(\"Pet_Name\")));\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "oauth2"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"id\": {{Pet_Id}},\n  \"category\": {\n    \"id\": 0,\n    \"name\": \"string\"\n  },\n  \"name\": \"{{Pet_Name}}\",\n  \"photoUrls\": [\n    \"string\"\n  ],\n  \"tags\": [\n    {\n      \"id\": 0,\n      \"name\": \"string\"\n    }\n  ],\n  \"status\": \"available\"\n}",
+					"options": {
+						"raw": {}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/pet",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"pet"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Invalid input",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/pet",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"pet"
+							]
+						}
+					},
+					"status": "Method Not Allowed",
+					"code": 405,
+					"_postman_previewlanguage": "text",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "text/plain"
+						}
+					],
+					"cookie": [],
+					"body": ""
+				}
+			]
+		},
+		{
+			"name": "Find pet by ID",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "146d7f4f-874f-473c-83c9-93db13d4c670",
+						"exec": [
+							"// Response code check\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"// Get pet name\r",
+							"pm.test(\"Get pet name\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.name).to.eql((pm.variables.get(\"Pet_Name\")));\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "api_key",
+						"value": ""
+					}
+				],
+				"url": {
+					"raw": "{{baseUrl}}/pet/{{Pet_Id}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"pet",
+						"{{Pet_Id}}"
+					]
+				},
+				"description": "Returns a single pet"
+			},
+			"response": [
+				{
+					"name": "Invalid ID supplied",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/pet/:petId",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"pet",
+								":petId"
+							],
+							"variable": [
+								{
+									"key": "petId"
+								}
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "text",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "text/plain"
+						}
+					],
+					"cookie": [],
+					"body": ""
+				},
+				{
+					"name": "successful operation",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/pet/:petId",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"pet",
+								":petId"
+							],
+							"variable": [
+								{
+									"key": "petId"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						}
+					],
+					"cookie": [],
+					"body": "{\n \"name\": \"doggie\",\n \"photoUrls\": [\n  \"<string>\",\n  \"<string>\"\n ],\n \"id\": \"<long>\",\n \"category\": {\n  \"id\": \"<long>\",\n  \"name\": \"<string>\"\n },\n \"tags\": [\n  {\n   \"id\": \"<long>\",\n   \"name\": \"<string>\"\n  },\n  {\n   \"id\": \"<long>\",\n   \"name\": \"<string>\"\n  }\n ],\n \"status\": \"<string>\"\n}"
+				},
+				{
+					"name": "Pet not found",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/pet/:petId",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"pet",
+								":petId"
+							],
+							"variable": [
+								{
+									"key": "petId"
+								}
+							]
+						}
+					},
+					"status": "Not Found",
+					"code": 404,
+					"_postman_previewlanguage": "text",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "text/plain"
+						}
+					],
+					"cookie": [],
+					"body": ""
+				}
+			]
+		},
+		{
+			"name": "Update an existing pet",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "697b40fe-2a5d-48ac-9307-ced3c7133607",
+						"exec": [
+							"// Status code check\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"// Verify updated pet name\r",
+							"pm.test(\"Verify updated pet name\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.name).to.eql((pm.variables.get(\"UpdPet_Name\")));\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "oauth2"
+				},
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"id\": {{Pet_Id}},\n  \"category\": {\n    \"id\": 0,\n    \"name\": \"string\"\n  },\n  \"name\": \"{{UpdPet_Name}}\",\n  \"photoUrls\": [\n    \"string\"\n  ],\n  \"tags\": [\n    {\n      \"id\": 0,\n      \"name\": \"string\"\n    }\n  ],\n  \"status\": \"available\"\n}",
+					"options": {
+						"raw": {}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/pet",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"pet"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Validation exception",
+					"originalRequest": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/pet",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"pet"
+							]
+						}
+					},
+					"status": "Method Not Allowed",
+					"code": 405,
+					"_postman_previewlanguage": "text",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "text/plain"
+						}
+					],
+					"cookie": [],
+					"body": ""
+				},
+				{
+					"name": "Invalid ID supplied",
+					"originalRequest": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/pet",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"pet"
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "text",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "text/plain"
+						}
+					],
+					"cookie": [],
+					"body": ""
+				},
+				{
+					"name": "Pet not found",
+					"originalRequest": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/pet",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"pet"
+							]
+						}
+					},
+					"status": "Not Found",
+					"code": 404,
+					"_postman_previewlanguage": "text",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "text/plain"
+						}
+					],
+					"cookie": [],
+					"body": ""
+				}
+			]
+		},
+		{
+			"name": "Deletes a pet",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "ed867e68-49e0-475c-bb03-59c554a0dcec",
+						"exec": [
+							"// response code check\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"// Verify deleted pet message\r",
+							"pm.test(\"Verify deleted pet message\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.message).to.eql(\"1234\");\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "oauth2"
+				},
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "api_key",
+						"value": "<string>"
+					}
+				],
+				"url": {
+					"raw": "{{baseUrl}}/pet/{{Pet_Id}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"pet",
+						"{{Pet_Id}}"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Pet not found",
+					"originalRequest": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "api_key",
+								"value": "<string>"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/pet/:petId",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"pet",
+								":petId"
+							],
+							"variable": [
+								{
+									"key": "petId"
+								}
+							]
+						}
+					},
+					"status": "Not Found",
+					"code": 404,
+					"_postman_previewlanguage": "text",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "text/plain"
+						}
+					],
+					"cookie": [],
+					"body": ""
+				},
+				{
+					"name": "Invalid ID supplied",
+					"originalRequest": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "api_key",
+								"value": "<string>"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/pet/:petId",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"pet",
+								":petId"
+							],
+							"variable": [
+								{
+									"key": "petId"
+								}
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "text",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "text/plain"
+						}
+					],
+					"cookie": [],
+					"body": ""
+				}
+			]
+		},
+		{
+			"name": "Find pet by ID",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "91789795-829e-44d6-aa9a-ce904f56210d",
+						"exec": [
+							"// Response code check\r",
+							"pm.test(\"Status code is 404\", function () {\r",
+							"    pm.response.to.have.status(404);\r",
+							"});\r",
+							"\r",
+							"// verify deleted pet message\r",
+							"pm.test(\"Find deleted pet\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.message).to.eql(\"Pet not found\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "api_key",
+						"value": ""
+					}
+				],
+				"url": {
+					"raw": "{{baseUrl}}/pet/{{Pet_Id}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"pet",
+						"{{Pet_Id}}"
+					]
+				},
+				"description": "Returns a single pet"
+			},
+			"response": [
+				{
+					"name": "Pet not found",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/pet/:petId",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"pet",
+								":petId"
+							],
+							"variable": [
+								{
+									"key": "petId"
+								}
+							]
+						}
+					},
+					"status": "Not Found",
+					"code": 404,
+					"_postman_previewlanguage": "text",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "text/plain"
+						}
+					],
+					"cookie": [],
+					"body": ""
+				},
+				{
+					"name": "successful operation",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/pet/:petId",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"pet",
+								":petId"
+							],
+							"variable": [
+								{
+									"key": "petId"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						}
+					],
+					"cookie": [],
+					"body": "{\n \"name\": \"doggie\",\n \"photoUrls\": [\n  \"<string>\",\n  \"<string>\"\n ],\n \"id\": \"<long>\",\n \"category\": {\n  \"id\": \"<long>\",\n  \"name\": \"<string>\"\n },\n \"tags\": [\n  {\n   \"id\": \"<long>\",\n   \"name\": \"<string>\"\n  },\n  {\n   \"id\": \"<long>\",\n   \"name\": \"<string>\"\n  }\n ],\n \"status\": \"<string>\"\n}"
+				},
+				{
+					"name": "Invalid ID supplied",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/pet/:petId",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"pet",
+								":petId"
+							],
+							"variable": [
+								{
+									"key": "petId"
+								}
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "text",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "text/plain"
+						}
+					],
+					"cookie": [],
+					"body": ""
+				}
+			]
+		}
+	],
+	"protocolProfileBehavior": {}
+}

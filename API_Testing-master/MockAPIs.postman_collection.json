@@ -1,0 +1,62 @@
+{
+	"info": {
+		"_postman_id": "fb0a0274-968f-47a8-870a-733fa6aebe9b",
+		"name": "MockAPIs",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "/v1/home",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{url}}/v1/home",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"v1",
+						"home"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Default",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{url}}/v1/home",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"v1",
+								"home"
+							]
+						}
+					},
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": null,
+					"cookie": [],
+					"body": "{\r\n    \"name\": \"Anjali\",\r\n    \"job\": \"Test Analyst\"\r\n}"
+				}
+			]
+		}
+	],
+	"protocolProfileBehavior": {}
+}
